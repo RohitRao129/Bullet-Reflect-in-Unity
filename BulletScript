@@ -35,7 +35,7 @@ public class BulletScript : MonoBehaviour
 
         Vector2 newdirn = Vector2.Reflect(prev_vel, normalvect).normalized;   // calculating reflected ray angle
 
-        float rotangle =   Vector2.SignedAngle(prevvel, normalvect);            //finding angle between normal and incident angle
+        float rotangle =   Vector2.SignedAngle(prev_vel, normalvect);            //finding angle between normal and incident angle
        
         transform.Rotate(new Vector3(0,0,180 + rotangle*2));                    //rotating acc to get reflecyed ray angle
 
