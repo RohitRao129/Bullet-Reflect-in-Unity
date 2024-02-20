@@ -1,0 +1,53 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class BulletScript : MonoBehaviour
+{
+    public float speed;
+    Rigidbody2D rb;
+    private Vector2 prev_vel;
+    
+    private void Start()
+    {
+        rb = GetComponent<Rigidbody2D>();
+        rb.velocity = transform.TransformDirection(Vector2.up) * speed;  //set the start speed of the bullet in updirn
+        prev_vel = rb.velocity.normalized;  //record Previous velocity dirn. of bullet before collision
+        Destroy(this.gameObject, 10);       //destroy this bullet automatically after 10 sec
+    }
+    
+     private void OnCollisionEnter2D(Collision2D other)
+    {
+        if(other.gameObject.CompareTag("Reflector"))           //reflector is tag of gameobject with which on collision bullet can reflect. If you want it reflect by everything remove if else condition
+        {
+            ReflectIt(other);
+        }
+        else
+        {
+            Destroy(this.gameObject);
+        }
+    }
+
+    void ReflectIt(Collision2D other2)
+    {
+        
+        Vector2 normalvect = other2.contacts[0].normal;    //getting normal of the collision point
+
+        Vector2 newdirn = Vector2.Reflect(prev_vel, normalvect).normalized;   // calculating reflected ray angle
+
+        float rotangle =   Vector2.SignedAngle(prevvel, normalvect);            //finding angle between normal and incident angle
+       
+        transform.Rotate(new Vector3(0,0,180 + rotangle*2));                    //rotating acc to get reflecyed ray angle
+
+        prev_vel = newdirn;      //set velocity vector for next collision
+        
+        rb.velocity = newdirn * speed;    // setting velocity in new dirn
+
+        
+
+    }
+
+
+
+
+}
